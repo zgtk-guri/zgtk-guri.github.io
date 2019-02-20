@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>在室状況</title>
+
+  <style>
+h1 {
+padding: 0.25em 0.5em;/*上下 左右の余白*/
+color: #494949;/*文字色*/
+background: transparent;/*背景透明に*/
+border-left: solid 5px #7db4e6;/*左線*/
+}
+
+.button,
+.button span {
+  position: relative;
+  display: inline-block;
+}
+.button span {
+  padding: .65em 4em;
+  background: -webkit-linear-gradient(#4689FF , #005FFF);
+  background: linear-gradient(#4689FF , #005FFF);
+  border: 1px solid #FFFFFF;
+  border-radius: 4px;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+.button::after {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  z-index: -1;
+  content: '';
+  width: 100%;
+  height: 24px;
+  background-color: rgba(0,0,0,.1);
+  border-radius: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+  -webkit-transition: .3s ease-in-out;
+  transition: .3s ease-in-out;
+}
+.button:hover span {
+  -webkit-transform: translateY(-10px);
+  transform: translateY(-10px);
+}
+.button:hover::after {
+  width: 70%;
+  height: 18px;
+}
+</style>
+</head>
+
+<body>
+
+
+  <h1>高専太郎の在室状況</h1>
+
+  <div class="main">
+
+  <h2 id="status">取得中</h2>
+
+  <p><span>最終更新日時: </span><span id ="date">取得中</span></p>
+
+  <p>
+
+  <a class="button" href="https://nittc.tokyo-ct.ac.jp/web/j/usr/yamashita/index.html"><span>ホームページ</a>
+
+  </p>
+  
+
+  </div>
+
+<script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyArhQEomJirQbjBZBgTV-vpNhZFUhcI36s",
+    authDomain: "pdspro1472.firebaseapp.com",
+    databaseURL: "https://pdspro1472.firebaseio.com",
+    projectId: "pdspro1472",
+    storageBucket: "pdspro1472.appspot.com",
+    messagingSenderId: "947378655578"
+  };
+  firebase.initializeApp(config);
+</script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+
+var teacherName = "teacher1";
+
+$(function(){
+  var teacherRef = firebase.database().ref(teacherName);
+  teacherRef.on('value', function(snapshot){
+    $("#date").html(snapshot.val().last_update);
+    $("#status").html(snapshot.val().status);
+  });
+  
+});
+</script>
+</body>
+
+</html>
